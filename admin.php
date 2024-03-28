@@ -24,13 +24,13 @@
   <link rel="icon" href="img/icone-serenatto.png" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <title>Serenatto - Admin</title>
+  <title>Mama'S Baking - Admin</title>
 </head>
 <body>
 <main>
   <section class="container-admin-banner">
     <img src="img/logo-mama-baking.png" class="logo-admin" alt="logo-mama-baking">
-    <h1>Admistração Serenatto</h1>
+    <h1>Admistração Mama'S Baking</h1>
     <img class= "ornaments" src="img/ornaments-coffee.png" alt="ornaments">
   </section>
   <h2>Lista de Produtos</h2>
