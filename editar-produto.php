@@ -1,30 +1,22 @@
 <?php
+    require "src/conexaoBD.php";
+    require "src/modelo/Produto.php";
+    require "src/repositorio/ProdutoRepositorio.php";
 
-require "src/conexaoBD.php";
-require "src/modelo/Produto.php";
-require "src/repositorio/ProdutoRepositorio.php";
+    $produtoRepositorio = new ProdutoRepositorio($pdo);
 
-$_GET['id'];
+    if (isset($_POST['editar'])){
+        $produto = new Produto($_POST['id'], $_POST['tipo'], $_POST['nome'], $_POST['descricao'], $_POST['preco']);
 
-$produtoRepositorio = new ProdutoRepositorio($pdo);
-$produto = $produtoRepositorio->buscarProduto($_GET['id']);
-
-if (isset($_POST['editar'])) {
-  $produto = new Produto($_POST['id'], $_POST['tipo'], $_POST['nome'], $_POST['descricao'], $_POST['preco']);
-
-  
-  if(isset($_FILES['imagem']))
-  {
-    $produto->setImagem(uniqid().$_FILES['imagem']['name']);
-    move_uploaded_file($_FILES['imagem']['tmp_name'], $produto->getCaminhoImg());
-  }
-
-
-  $produtoRepositorio->atualizarProduto($produto);
-  header("Location: admin.php");
-} else {
-  $produto = $produtoRepositorio->buscarProduto($_GET['id']);
-}
+        if (isset($_FILES['imagem'])){
+            $produto->setImagem(uniqid() . $_FILES['imagem']['name']);
+            move_uploaded_file($_FILES['imagem']['tmp_name'], $produto->getCaminhoImg());
+        }
+        $produtoRepositorio->atualizarProduto($produto);
+        header("Location: admin.php");
+    }else{
+        $produto = $produtoRepositorio->buscarProduto($_GET['id']);
+    }
 
 ?>
 
@@ -49,7 +41,7 @@ if (isset($_POST['editar'])) {
 <body>
 <main>
   <section class="container-admin-banner">
-    <img src="img/logo-mama-baking.png" class="logo-admin" alt="logo-mama-baking.png">
+    <img src="img/logo-serenatto-horizontal.png" class="logo-admin" alt="logo-serenatto">
     <h1>Editar Produto</h1>
     <img class= "ornaments" src="img/ornaments-coffee.png" alt="ornaments">
   </section>
@@ -62,28 +54,28 @@ if (isset($_POST['editar'])) {
       <div class="container-radio">
         <div>
             <label for="cafe">Café</label>
-            <input type="radio" id="cafe" name="tipo" value="Café" <?= $produto->getTipo() == "Café"? "checked" : ""?>>
+            <input type="radio" id="cafe" name="tipo" value="Café" <?= $produto->getTipo() == "Café"? "checked" : "" ?>>
         </div>
         <div>
             <label for="lanche">Lanche</label>
-            <input type="radio" id="lanche" name="tipo" value="Lanche"<?= $produto->getTipo() == "Lanche"? "checked" : ""?>>
+            <input type="radio" id="lanche" name="tipo" value="lanche" <?= $produto->getTipo() == "Lanche"? "checked" : "" ?>>
         </div>
         <div>
             <label for="almoco">Almoço</label>
-            <input type="radio" id="almoco" name="tipo" value="Almoço"<?= $produto->getTipo() == "Almoço"? "checked" : ""?>>
+            <input type="radio" id="almoco" name="tipo" value="Almoço" <?= $produto->getTipo() == "Almoço"? "checked" : "" ?>>
         </div>
-      </div>
+    </div>
 
       <label for="descricao">Descrição</label>
-      <input type="text" id="descricao" name="descricao" value="<?= $produto->getDescricao()?>" placeholder="Digite uma descrição" required>
+      <input type="text" name="descricao" id="descricao" value="<?= $produto->getDescricao()?>" placeholder="Digite uma descrição" required>
 
       <label for="preco">Preço</label>
-      <input type="text" id="preco" name="preco" value="<?= number_format($produto->getPreco(),2)?>" placeholder="Digite uma descrição" required>
+      <input type="text" name="preco" id="preco" value="<?= number_format($produto->getPreco(),2)?>" placeholder="Digite uma descrição" required>
 
       <label for="imagem">Envie uma imagem do produto</label>
       <input type="file" name="imagem" accept="image/*" id="imagem" placeholder="Envie uma imagem">
         <input type="hidden" name="id" value="<?= $produto->getId()?>">
-      <input type="submit" name="editar" class="botao-cadastrar"  value="Editar produto"/>
+      <input type="submit" name="editar" class="botao-cadastrar" value="Editar produto"/>
     </form>
 
   </section>

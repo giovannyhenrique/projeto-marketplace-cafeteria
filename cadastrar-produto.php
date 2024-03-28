@@ -1,30 +1,32 @@
 <?php
 
-require "src/conexaoBD.php";
-require "src/modelo/Produto.php";
-require "src/repositorio/ProdutoRepositorio.php";
+    require "src/conexaoBD.php";
+    require "src/modelo/Produto.php";
+    require "src/repositorio/ProdutoRepositorio.php";
 
-if(isset($_POST['cadastro'])){
-    $produto = new Produto(null,
-        $_POST['tipo'],
-        $_POST['nome'],
-        $_POST['descricao'],
-        $_POST['preco']
-    );
-    
-    if (isset($_POST['editar'])){
-        $produto->setImagem(uniqid() . $_FILES['imagem']['name']);
-        move_uploaded_file($_FILES['imagem']['tmp_name'], $produto->getCaminhoImg());
+    if (isset($_POST['cadastro'])){
+        $produto = new Produto(null,
+            $_POST['tipo'],
+            $_POST['nome'],
+            $_POST['descricao'],
+            $_POST['preco']
+        );
+
+        if (isset($_FILES['imagem'])){
+            $produto->setImagem(uniqid() . $_FILES['imagem']['name']);
+            move_uploaded_file($_FILES['imagem']['tmp_name'], $produto->getCaminhoImg());
+        }
+
+        $produtoRepositorio = new ProdutoRepositorio($pdo);
+        $produtoRepositorio->salvarProduto($produto);
+
+        header("Location: admin.php");
+
     }
-    
-    $produtoRepositorio = new ProdutoRepositorio($pdo);
-    $produtoRepositorio->salvarProduto($produto);
-    
-    header("Location: admin.php");
-}
+
+
 
 ?>
-
 
 <!doctype html>
 <html lang="pt-br">
@@ -33,6 +35,7 @@ if(isset($_POST['cadastro'])){
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/admin.css">
     <link rel="stylesheet" href="css/form.css">
@@ -46,7 +49,7 @@ if(isset($_POST['cadastro'])){
 <body>
 <main>
     <section class="container-admin-banner">
-        <img src="img/logo-mama-baking.png" class="logo-admin" alt="logo-mama-baking">
+        <img src="img/logo-serenatto-horizontal.png" class="logo-admin" alt="logo-serenatto">
         <h1>Cadastro de Produtos</h1>
         <img class= "ornaments" src="img/ornaments-coffee.png" alt="ornaments">
     </section>
@@ -54,14 +57,14 @@ if(isset($_POST['cadastro'])){
         <form method="post" enctype="multipart/form-data">
 
             <label for="nome">Nome</label>
-            <input type="text" id="nome" name="nome" placeholder="Digite o nome do produto" required>
+            <input name="nome" type="text" id="nome" placeholder="Digite o nome do produto" required>
             <div class="container-radio">
                 <div>
                     <label for="cafe">Café</label>
                     <input type="radio" id="cafe" name="tipo" value="Café" checked>
                 </div>
                 <div>
-                    <label for="lanche">Lanche</label>
+                    <label for="almoco">Lanche</label>
                     <input type="radio" id="lanche" name="tipo" value="Lanche">
                 </div>
                 <div>
@@ -70,15 +73,15 @@ if(isset($_POST['cadastro'])){
                 </div>
             </div>
             <label for="descricao">Descrição</label>
-            <input type="text" id="descricao" name="descricao" placeholder="Digite uma descrição" required>
+            <input name="descricao" type="text" id="descricao" placeholder="Digite uma descrição" required>
 
             <label for="preco">Preço</label>
-            <input type="text" id="preco" name="preco" placeholder="Digite uma descrição" required>
+            <input name="preco" type="text" id="preco" placeholder="Digite uma descrição" required>
 
             <label for="imagem">Envie uma imagem do produto</label>
-            <input class="botao-enviar-imagem" type="file" name="imagem" accept="image/*" id="imagem" placeholder="Envie uma imagem">
+            <input type="file" name="imagem" accept="image/*" id="imagem" placeholder="Envie uma imagem">
 
-            <input type="submit" name="cadastro" class="botao-cadastrar" value="Cadastrar produto"/>
+            <input name="cadastro" type="submit" class="botao-cadastrar" value="Cadastrar produto"/>
         </form>
     
     </section>
