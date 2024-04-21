@@ -8,7 +8,7 @@
     if (isset($_POST['editar'])){
         $produto = new Produto($_POST['id'], $_POST['tipo'], $_POST['nome'], $_POST['descricao'], $_POST['preco']);
 
-        if (isset($_FILES['imagem'])){
+        if ($_FILES['imagem']['error'] == UPLOAD_ERR_OK){
             $produto->setImagem(uniqid() . $_FILES['imagem']['name']);
             move_uploaded_file($_FILES['imagem']['tmp_name'], $produto->getCaminhoImg());
         }
@@ -58,7 +58,7 @@
         </div>
         <div>
             <label for="lanche">Lanche</label>
-            <input type="radio" id="lanche" name="tipo" value="lanche" <?= $produto->getTipo() == "Lanche"? "checked" : "" ?>>
+            <input type="radio" id="lanche" name="tipo" value="Lanche" <?= $produto->getTipo() == "Lanche"? "checked" : "" ?>>
         </div>
         <div>
             <label for="almoco">Almoço</label>
@@ -75,7 +75,7 @@
       <label for="imagem">Envie uma imagem do produto</label>
       <input type="file" name="imagem" accept="image/*" id="imagem" placeholder="Envie uma imagem">
         <input type="hidden" name="id" value="<?= $produto->getId()?>">
-      <input type="submit" name="editar" class="botao-cadastrar" value="Editar produto"/>
+      <input type="submit" name="editar" class="botao-cadastrar" value="Editar produto" <?= $produto->getId() == null ? "checked" : ""?>/>
     </form>
 
   </section>
