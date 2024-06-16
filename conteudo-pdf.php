@@ -49,7 +49,7 @@ $produtos = $produtoRepositorio->buscarTodosProdutos();
         font-size: 30px;
     }
 </style>
-<img src="img/logo-mama-baking.png" alt="">
+<input id='data' type='text' value='<?php echo date("d/m/Y"); ?>'>
 <h1>Cardápio Atual</h1>
 <table>
     <thead>

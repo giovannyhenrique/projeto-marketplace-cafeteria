@@ -68,6 +68,9 @@
   <form action="gerador-pdf.php" method="post">
     <input type="submit" class="botao-cadastrar" value="Baixar Relatório"/>
   </form>
+  <a class="botao-cadastrar" href="HomeAdmin.php">Cardápio</a>
+  <br>
+  <br>
   </section>
 </main>
 </body>
